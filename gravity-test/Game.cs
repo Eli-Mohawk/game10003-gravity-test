@@ -13,9 +13,11 @@ namespace MohawkGame2D
 
         Vector2 gravity = new Vector2(0, 500);
 
-        float friction = 0.9f;
+        float frictionY = 0.9f;
+        float frictionX = 0.8f;
 
         bool gameRun = false;
+
         public void Setup()
         {
             Window.SetTitle("Gravity Test");
@@ -51,7 +53,7 @@ namespace MohawkGame2D
             if (bottomEdge > Window.Height)
             {
                 // inverses the velocity (-1) and reduces its bounce (friction)
-                rectVel.Y *= -1 * friction;
+                rectVel.Y *= -1 * frictionY;
 
                 // snaps the rectangle up so it doesnt clip / makes it 1/1 velocity
                 rectPos.Y = Window.Height - rectSize.Y;
@@ -59,13 +61,20 @@ namespace MohawkGame2D
 
             if (topEdge < 0)
             {
-                rectVel.Y *= -1 * friction;
-               // rectPos.Y = 
+                rectVel.Y *= -1 * frictionY;
+                rectPos.Y = 0;
             }
 
-           // if (leftEdge)
+            if (leftEdge < 0)
             {
+                rectVel.X *= -1 * frictionX;
+                rectPos.X = 0;
+            }
 
+            if (rightEdge > Window.Width)
+            {
+                rectVel.X *= -1 * frictionX;
+                rectPos.X = Window.Width - rectSize.X;
             }
 
         }
@@ -132,7 +141,6 @@ namespace MohawkGame2D
 
                 // freezes game
                 gameRun = false;
-
             }
 
             if (Input.IsKeyboardKeyPressed(KeyboardInput.Enter))
